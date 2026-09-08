@@ -6,6 +6,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
 //import 'package:intl/intl.dart';
 
 void main() => runApp(InvestimentosStateless());
@@ -30,6 +31,45 @@ class InvestimentosStatefull extends StatefulWidget {
 }
 
 class _InvestimentosStatefullState extends State<InvestimentosStatefull> {
+  TextStyle textStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
+
+  static final NumberFormat formatoReal = NumberFormat.currency(
+    locale: 'pt-br',
+  );
+
+  double investimentoMensal = 0;
+  double anosInvestindo = 0;
+  double valorInvestido = 0;
+  double resultado = 0;
+  double rentabilidadeAnual = 0;
+  double patrimonioAcumulado = 0;
+
+  void atualizarValorInvestido() {
+    setState(() {
+      valorInvestido = investimentoMensal * (anosInvestindo * 12);
+    });
+  }
+
+  void atualizarResultado() {
+    setState(() {
+      resultado =
+          (investimentoMensal *
+                  (pow(
+                        1 + (rentabilidadeAnual / 12 / 100),
+                        (anosInvestindo * 12),
+                      ) -
+                      1)) /
+              (rentabilidadeAnual / 12 / 100) -
+          rentabilidadeAnual;
+    });
+  }
+
+  void atualizarPatrimonioAcumulado() {
+    setState(() {
+      patrimonioAcumulado = valorInvestido + resultado;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
