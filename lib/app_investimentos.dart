@@ -41,7 +41,7 @@ class _InvestimentosStatefullState extends State<InvestimentosStatefull> {
   double anosInvestindo = 0;
   double valorInvestido = 0;
   double resultado = 0;
-  double rentabilidadeAnual = 0;
+  double rentabilidadeAnual = 1;
   double patrimonioAcumulado = 0;
 
   void atualizarValorInvestido() {
@@ -60,7 +60,7 @@ class _InvestimentosStatefullState extends State<InvestimentosStatefull> {
                       ) -
                       1)) /
               (rentabilidadeAnual / 12 / 100) -
-          rentabilidadeAnual;
+          valorInvestido;
     });
   }
 
@@ -70,8 +70,208 @@ class _InvestimentosStatefullState extends State<InvestimentosStatefull> {
     });
   }
 
+  Widget textoTitulo() {
+    return Text(
+      'Calculadora de Investimentos',
+      style: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontStyle: FontStyle.italic,
+      ),
+    );
+  }
+
+  Widget imagemCalculadora() {
+    return SizedBox(
+      height: 50,
+      child: Image.asset(
+        'assets/images/rentabilidade.jpg',
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+
+  Widget cardInvestimento() {
+    return Card(
+      margin: EdgeInsets.all(14),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 14, bottom: 8),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Text('Investimento mensal', style: textStyle),
+                  Spacer(),
+                  Text(
+                    '${formatoReal.format(investimentoMensal)}',
+                    style: textStyle,
+                  ),
+                ],
+              ),
+            ),
+            Slider(
+              value: investimentoMensal,
+              min: 0,
+              max: 10000,
+              divisions: 1000,
+              activeColor: Colors.green.shade900,
+              inactiveColor: Colors.green.shade100,
+              onChanged: (double value) {
+                setState(() {
+                  investimentoMensal = value;
+                });
+                atualizarValorInvestido();
+                atualizarResultado();
+                atualizarPatrimonioAcumulado();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget cardTempo() {
+    return Card(
+      margin: EdgeInsets.all(14),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 14, bottom: 8),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Text('Tempo investimento (anos)', style: textStyle),
+                  Spacer(),
+                  Text(anosInvestindo.toString() + ' anos', style: textStyle),
+                ],
+              ),
+            ),
+            Slider(
+              value: anosInvestindo,
+              min: 0,
+              max: 20,
+              divisions: 20,
+              activeColor: Colors.green.shade900,
+              inactiveColor: Colors.green.shade100,
+              onChanged: (double value) {
+                setState(() {
+                  anosInvestindo = value;
+                });
+                atualizarValorInvestido();
+                atualizarResultado();
+                atualizarPatrimonioAcumulado();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget cardRentabilidade() {
+    return Card(
+      margin: EdgeInsets.all(14),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 14, bottom: 8),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Text('Rentabilidade anual', style: textStyle),
+                  Spacer(),
+                  Text(rentabilidadeAnual.toString() + '%', style: textStyle),
+                ],
+              ),
+            ),
+            Slider(
+              value: rentabilidadeAnual,
+              min: 1,
+              max: 20,
+              divisions: 4,
+              activeColor: Colors.green.shade900,
+              inactiveColor: Colors.green.shade100,
+              onChanged: (double value) {
+                setState(() {
+                  rentabilidadeAnual = value;
+                });
+                atualizarValorInvestido();
+                atualizarResultado();
+                atualizarPatrimonioAcumulado();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget cardResultado() {
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 14, vertical: 30),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Valor investido: ', style: textStyle),
+                Text('${formatoReal.format(valorInvestido)}', style: textStyle),
+              ],
+            ),
+            Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Resultado: ', style: textStyle),
+                Text('${formatoReal.format(resultado)}', style: textStyle),
+              ],
+            ),
+            Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Patrimônio acumulado: ', style: textStyle),
+                Text(
+                  '${formatoReal.format(patrimonioAcumulado)}',
+                  style: textStyle,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: Colors.green.shade900,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 10),
+            textoTitulo(),
+            imagemCalculadora(),
+            SizedBox(height: 20),
+            cardInvestimento(),
+            cardTempo(),
+            cardRentabilidade(),
+            cardResultado(),
+          ],
+        ),
+      ),
+    );
   }
 }
