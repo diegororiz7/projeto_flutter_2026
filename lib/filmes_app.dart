@@ -21,7 +21,7 @@ class FilmesApp extends StatelessWidget {
       routes: {
         '/': (context) => const TelaCategorias(),
         '/filmes': (context) => const TelaFilmes(),
-        //'/detalhe': (context) => const TelaDetalheFilme(),
+        '/detalhe': (context) => const TelaDetalheFilme(),
       },
     );
   }
@@ -189,6 +189,73 @@ class _TelaFilmesState extends State<TelaFilmes> {
         },
         icon: const Icon(Icons.add),
         label: const Text('Adicionar'),
+      ),
+      body: ListView.builder(
+        itemCount: filmesCategoria.length,
+        itemBuilder: (context, index) {
+          final filme = filmesCategoria[index];
+          final indiceReal = filmes.indexOf(filme);
+
+          return ListTile(
+            leading: Icon(Icons.movie, color: Colors.indigo),
+            title: Text(filme['titulo'] ?? ''),
+            subtitle: Text(
+              'Gênero: ${filme['genero']} . Nota: ${filme['nota']}',
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () => removerFilme(indiceReal),
+              color: Colors.red,
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/detalhe', arguments: filme);
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class TelaDetalheFilme extends StatelessWidget {
+  const TelaDetalheFilme({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final filme =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
+        {};
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(filme['titulo']),
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.movie, size: 80, color: Colors.indigo),
+            Text(
+              filme['titulo'] ?? '',
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.indigo,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Gênero: ${filme['genero'] ?? ''}',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              'Nota: ${filme['nota'] ?? ''}',
+              style: TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
       ),
     );
   }
