@@ -26,6 +26,27 @@ class PerfilStatefull extends StatefulWidget {
 }
 
 class _PerfilStatefullState extends State<PerfilStatefull> {
+
+  late Dio dio;
+  int userId = 1;
+  bool loading = false;
+
+  String name = 'Nome';
+  String email = 'Email';
+  String avatar = 'https://via.placeholder.com/150';
+  String job = '';
+
+  TextEditingController jobController = TextEditingController();
+  String result = '';
+
+  /*void initState() {
+    dio = Dio(BaseOptions(
+        baseUrl: 'https://jsonplaceholder.typicode.com',
+        headers: {'Content-Type': 'application/json'},
+        connectTimeout: Duration(seconds: 5),
+        receiveTimeout: Duration(seconds: 5)));
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
