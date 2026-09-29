@@ -26,8 +26,7 @@ class PerfilStatefull extends StatefulWidget {
 }
 
 class _PerfilStatefullState extends State<PerfilStatefull> {
-
-  late Dio dio;
+  //late Dio dio;
   int userId = 1;
   bool loading = false;
 
