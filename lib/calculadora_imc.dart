@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, unused_field, prefer_final_fields
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 
@@ -15,6 +17,12 @@ class CalculadoraIMC extends StatefulWidget {
 }
 
 class _CalculadoraIMCState extends State<CalculadoraIMC> {
+  final _formKey = GlobalKey<FormState>();
+  final _pesoController = TextEditingController();
+  final _alturaController = TextEditingController();
+
+  String _resultado = "Informe seus dados";
+
   @override
   Widget build(BuildContext context) {
     return const Placeholder();

@@ -46,6 +46,28 @@ class AcademiaStatefull extends StatefulWidget {
 }
 
 class _AcademiaStatefullState extends State<AcademiaStatefull> {
+  List<Exercicio> exercicios = [];
+  List<Exercicio> filtrados = [];
+
+  final TextEditingController searchController = TextEditingController();
+
+  final grupos = [
+    'Peito',
+    'Costas',
+    'Pernas',
+    'Ombros',
+    'Bíceps',
+    'Tríceps',
+    'Abdômen',
+    'Cardio',
+  ];
+
+  /*@override
+  void initState() {
+    super.initState();
+    filtrados = exercicios;
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
