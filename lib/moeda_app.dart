@@ -18,6 +18,22 @@ class ConversorMoeda extends StatefulWidget {
 }
 
 class _ConversorMoedaState extends State<ConversorMoeda> {
+  final TextEditingController controller = TextEditingController();
+
+  String de = "USD";
+  String para = "BRL";
+  String? resultado;
+  double? cotacao;
+  bool carregando = false;
+
+  final List<String> moedas = ["USD", "BRL", "EUR", "ARS", "CAD", "JPY", "BTC"];
+
+  /*@override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
