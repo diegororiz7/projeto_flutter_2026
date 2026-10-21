@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, unused_local_variable, deprecated_member_use, unnecessary_string_interpolations
+// ignore_for_file: non_constant_identifier_names, unused_local_variable, deprecated_member_use, unnecessary_string_interpolations, body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
 
@@ -176,7 +176,7 @@ class _AcademiaStatefullState extends State<AcademiaStatefull> {
                 );
 
                 setState(() {
-                  if (exercicio == novo) {
+                  if (exercicio == null) {
                     exercicios.add(novo);
                   } else {
                     exercicios[index!] = novo;
@@ -211,14 +211,19 @@ class _AcademiaStatefullState extends State<AcademiaStatefull> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('🏋️ ${e.nome}'),
-            Checkbox(
-              value: e.concluido,
-              onChanged: (value) {
-                setState(() {
-                  e.concluido = value!;
-                });
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('🏋️ ${e.nome}'),
+                Checkbox(
+                  value: e.concluido,
+                  onChanged: (value) {
+                    setState(() {
+                      e.concluido = value!;
+                    });
+                  },
+                ),
+              ],
             ),
             Text('${e.series} séries'),
             Text('${e.repeticoes} repetições'),
@@ -268,6 +273,39 @@ class _AcademiaStatefullState extends State<AcademiaStatefull> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(title: const Text('🏋️Ficha de academia')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: adicionarEditar,
+        child: const Icon(Icons.add),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            estatisticas(),
+            const SizedBox(height: 10),
+            TextField(
+              controller: searchController,
+              onChanged: atualizarBusca,
+              decoration: const InputDecoration(
+                labelText: 'Pesquisar exercício',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: filtrados.length,
+                itemBuilder: (context, index) {
+                  return cardExercicio(exercicios[index], index);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
